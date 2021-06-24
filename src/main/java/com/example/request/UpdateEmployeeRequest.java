@@ -2,6 +2,7 @@ package com.example.request;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class UpdateEmployeeRequest {
 	private String name;
 	
 	@JsonProperty("start_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 	
 	@JsonProperty("vacation_days")

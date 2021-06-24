@@ -2,7 +2,7 @@ package com.example.request;
 
 import java.util.Date;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -12,16 +12,17 @@ import lombok.Setter;
 @Setter
 public class UpdateVacationRequest {
 	
-	
-	//TODO Change to Enum
 	private String status;
 	
-	private Long resolved_by;
+	@JsonProperty("resolved_by")
+	private Long resolvedBy;
 	
 	@JsonProperty("vacation_start_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date vacationStartDate;
 	
 	@JsonProperty("vacation_end_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date vacationEndDate;
 
 

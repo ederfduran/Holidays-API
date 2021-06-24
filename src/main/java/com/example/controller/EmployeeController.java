@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Employee;
+import com.example.exceptions.EntityNotFoundException;
 import com.example.request.CreateEmployeeRequest;
 import com.example.request.UpdateEmployeeRequest;
 import com.example.response.EmployeeResponse;
@@ -25,7 +26,7 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 	
-	@PostMapping("/")
+	@PostMapping("")
 	public EmployeeResponse createEmployee(@Valid @RequestBody CreateEmployeeRequest createEmployeeRequest) {
 		Employee employee = employeeService.createEmployee(createEmployeeRequest);
 		return new EmployeeResponse(employee);
@@ -34,18 +35,28 @@ public class EmployeeController {
 	@GetMapping("/{id}")
 	public EmployeeResponse getEmployee(@PathVariable Long id){
 		Employee employee = employeeService.getEmployee(id);
+		if (employee == null) {
+			throw new EntityNotFoundException("id-"+ id + " not found");
+		}
 		return new EmployeeResponse(employee);
 	}
 	
 	@PutMapping("/{id}")
 	public EmployeeResponse updateEmployee(@Valid @RequestBody UpdateEmployeeRequest updateEmployeeRequest, @PathVariable Long id) {
 		Employee employee = employeeService.updateEmployee(updateEmployeeRequest, id);
+		if (employee == null) {
+			throw new EntityNotFoundException("id-"+ id + " not found");
+		}
 		return new EmployeeResponse(employee);
 	}
 	
 	@DeleteMapping("/{id}")
 	public String deleteEmployee(@PathVariable Long id) {
-		return employeeService.deleteEmployee(id);
+		String response = employeeService.deleteEmployee(id);
+		if (response == null) {
+			throw new EntityNotFoundException("id-"+ id + " not found");
+		}
+		return response;
 	}
 
 }

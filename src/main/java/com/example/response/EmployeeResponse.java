@@ -23,18 +23,18 @@ public class EmployeeResponse {
 	 @JsonProperty("start_date")
 	 private Date startDate;
 	 
-	 @JsonProperty("vacation_days")
-	 private float vacationDays;
-	 
 	 @JsonProperty("vacation_days_taken")
 	 private float vacationDaysTaken;
+	 
+	 @JsonProperty("vacation_days_available")
+	private float vacationDaysAvailable;
 	 
 	 public EmployeeResponse(Employee employee) {
 		 this.id = employee.getId();
 		 this.name = employee.getName();
 		 this.startDate = employee.getStartDate();
-		 this.vacationDays = employee.getVacationDays();
 		 this.vacationDaysTaken = employee.getVacationDaysTaken();
+		 this.vacationDaysAvailable = employee.getVacationDaysAvailable();
 	 }
 	 
 }

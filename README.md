@@ -114,7 +114,6 @@ The DB to use will be an SQL database in order to better represent the relations
   id
   name
   start_date
-  vacation_days
   vacation_days_taken
 
 - **Table manager**
@@ -145,6 +144,18 @@ As part of the exercise it is assumed that:
 
 Java library to get rid of boilerplate code. [project lombok](https://projectlombok.org/)
 
-#### JPA
+#### JPA/JPQL
 
-This is the ORM used for mapping entities into mysql db.
+This is the ORM used for mapping entities into mysql db and JQPL to execute some native sql syntax.
+
+#### JUnit/mockito
+
+User for running unit test.
+
+### API DOCS (Swagger/OpenAPI)
+
+To look API documentation and also play around with API you can go to:
+
+```sh
+http://localhost:8080/swagger-ui.html
+```

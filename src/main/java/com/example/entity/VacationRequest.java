@@ -4,9 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.example.request.CreateVacationRequest;
@@ -23,22 +28,28 @@ import lombok.Setter;
 @Table(name = "vacation_request")
 public class VacationRequest extends EntityUtil{
 	
+	public enum Status {
+	    pending,
+	    approved,
+	    rejected
+	  }
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 	
-	// TODO Add FK annotations
-	@Column(name = "author")
-	private Long author;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "author")
+	private Employee author;
 	
-	// TODO Implement Enum
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	private String status;
+	private Status status;
 	
-	// TODO add FK annotations
-	@Column(name = "resolved_by")
-	private Long resolvedBy;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "resolved_by")	
+	private Manager resolvedBy;
 	
 	@Column(name = "request_created_at")
 	private Date requestCreatedAt;
@@ -52,21 +63,16 @@ public class VacationRequest extends EntityUtil{
 	public VacationRequest(CreateVacationRequest createVacationRequest) {
 		this.vacationStartDate = createVacationRequest.getVacationStartDate();
 		this.vacationEndDate = createVacationRequest.getVacationEndDate();
-		
-		// TODO Change to Enum
 		this.requestCreatedAt = new Date();
-		this.status = "pending";
-		this.resolvedBy = -1L;
-		this.author = -1L;
+		this.status = Status.pending;
+		this.resolvedBy = null;
+		this.author = null;
 	}
 	
 	public void updateVacationRequest(UpdateVacationRequest updateVacationRequest) {
 		if (this.exists(updateVacationRequest.getStatus())) {
-			this.setStatus(updateVacationRequest.getStatus());
-		}
-		if (this.exists(updateVacationRequest.getResolved_by())) {
-			this.setResolvedBy(updateVacationRequest.getResolved_by());
-		}
+			this.setStatus(Status.valueOf(updateVacationRequest.getStatus()));
+		} 
 		if (this.exists(updateVacationRequest.getVacationStartDate())) {
 			this.setVacationStartDate(updateVacationRequest.getVacationStartDate());
 		}

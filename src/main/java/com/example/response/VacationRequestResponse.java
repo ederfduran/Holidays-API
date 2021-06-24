@@ -36,8 +36,10 @@ public class VacationRequestResponse {
 	
 	public VacationRequestResponse(VacationRequest vacationRequest) {
 		this.id = vacationRequest.getId();
-		this.author = vacationRequest.getAuthor();
-		this.status = vacationRequest.getStatus();
+		this.author = vacationRequest.getAuthor().getId();
+		this.status = vacationRequest.getStatus().name();
+		if (vacationRequest.getResolvedBy() != null)
+			this.resolvedBy = vacationRequest.getResolvedBy().getId();
 		this.requestCreatedAt = vacationRequest.getRequestCreatedAt();
 		this.vacationStartDate = vacationRequest.getVacationStartDate();
 		this.vacationEndDate = vacationRequest.getVacationEndDate();

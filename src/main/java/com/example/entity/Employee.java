@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,16 +35,21 @@ public class Employee extends EntityUtil {
 	@Column(name = "start_date")
 	private Date startDate;
 	
-	@Column(name = "vacation_days")
-	private float vacationDays;
 	
 	@Column(name = "vacation_days_taken")
 	private float vacationDaysTaken;
 	
+	
+	public float getVacationDaysAvailable() {
+		Date now = new Date();
+		long diffInMillies = Math.abs(this.startDate.getTime() - now.getTime());
+	    long differenceInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		return ((differenceInDays * 30)/365) - this.vacationDaysTaken;
+	}
+	
 	public Employee(CreateEmployeeRequest createEmployeeRequest) {
 		this.name = createEmployeeRequest.getName();
 		this.startDate = createEmployeeRequest.getStartDate();
-		this.vacationDays = 0.0f;
 		this.vacationDaysTaken = 0.0f;
 	}
 	
@@ -53,9 +59,6 @@ public class Employee extends EntityUtil {
 		}
 		if (this.exists(updateEmployeeRequest.getVacationDaysTaken())) {
 			this.setVacationDaysTaken(updateEmployeeRequest.getVacationDaysTaken());
-		}
-		if (this.exists(updateEmployeeRequest.getVacationDays())) {
-			this.setVacationDays(updateEmployeeRequest.getVacationDays());
 		}
 		if (this.exists(updateEmployeeRequest.getStartDate())) {
 			this.setStartDate(updateEmployeeRequest.getStartDate());
